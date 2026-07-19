@@ -323,24 +323,16 @@
                     </div>
                 </div>
 
-                <!-- Image Upload -->
+                <!-- Image URL -->
                 <div class="form-group">
-                    <label for="pf-image">Imagen del Producto</label>
-                    <div class="image-upload-area" id="image-upload-area">
-                        <input type="file" id="pf-image" accept="image/jpeg,image/png,image/webp">
-                        <div class="upload-placeholder" id="upload-placeholder">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <p>Haz clic para subir imagen</p>
-                            <span>JPEG, PNG o WebP</span>
-                        </div>
-                        <div class="upload-preview hidden" id="upload-preview">
-                            <img id="preview-img" alt="Preview">
-                            <button type="button" class="btn-remove-image" id="remove-image-btn">
-                                <i class="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
+                    <label for="pf-image-url">URL de la Imagen</label>
+                    <input type="url" id="pf-image-url" placeholder="https://ejemplo.com/imagen.jpg (opcional)">
+                    <div class="image-preview-url hidden" id="image-preview-url">
+                        <img id="preview-img" alt="Vista previa" onerror="this.closest('.image-preview-url').classList.add('hidden')">
+                        <button type="button" class="btn-remove-image" id="remove-image-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
                     </div>
-                    <span id="current-image-name" class="image-name"></span>
                 </div>
 
                 <div class="modal-error" id="form-error"></div>
@@ -358,7 +350,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
     <script src="../firebase-config.js"></script>
     <script src="admin.js"></script>
 </body>

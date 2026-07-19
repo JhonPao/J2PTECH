@@ -86,18 +86,14 @@ const colorsContainer = document.getElementById('colors-container');
 const addColorBtn = document.getElementById('add-color-btn');
 const lengthsContainer = document.getElementById('lengths-container');
 const addLengthBtn = document.getElementById('add-length-btn');
-const pfImage = document.getElementById('pf-image');
-const uploadPlaceholder = document.getElementById('upload-placeholder');
-const uploadPreview = document.getElementById('upload-preview');
+const pfImageUrl = document.getElementById('pf-image-url');
 const previewImg = document.getElementById('preview-img');
 const removeImageBtn = document.getElementById('remove-image-btn');
-const currentImageName = document.getElementById('current-image-name');
-const imageUploadArea = document.getElementById('image-upload-area');
+const imagePreviewUrl = document.getElementById('image-preview-url');
 
 // --- State ---
 let allProducts = [];
 let editingProductId = null;
-let currentImageFile = null;
 let currentImageUrl = null;
 let productsListener = null;
 
@@ -349,12 +345,11 @@ function closeModal() {
     productForm.reset();
     pfId.value = '';
     editingProductId = null;
-    currentImageFile = null;
     currentImageUrl = null;
     formError.textContent = '';
     optionsSection.classList.add('hidden');
     pfHasOptions.checked = false;
-    resetImageUpload();
+    resetImagePreview();
     resetDynamicFields();
 }
 
@@ -380,12 +375,10 @@ function resetDynamicFields() {
     `;
 }
 
-function resetImageUpload() {
-    uploadPlaceholder.classList.remove('hidden');
-    uploadPreview.classList.add('hidden');
+function resetImagePreview() {
+    imagePreviewUrl.classList.add('hidden');
     previewImg.src = '';
-    pfImage.value = '';
-    currentImageName.textContent = '';
+    pfImageUrl.value = '';
 }
 
 // Close modal events
@@ -458,38 +451,23 @@ bindRemoveButtons(featuresContainer);
 bindRemoveButtons(colorsContainer);
 bindRemoveButtons(lengthsContainer);
 
-// --- Image Upload ---
-pfImage.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-        formError.textContent = 'Solo se permiten imágenes.';
-        pfImage.value = '';
-        return;
+// --- Image URL Preview ---
+pfImageUrl.addEventListener('input', () => {
+    const url = pfImageUrl.value.trim();
+    if (url) {
+        previewImg.src = url;
+        imagePreviewUrl.classList.remove('hidden');
+        currentImageUrl = url;
+    } else {
+        imagePreviewUrl.classList.add('hidden');
+        previewImg.src = '';
+        currentImageUrl = null;
     }
-
-    if (file.size > 5 * 1024 * 1024) {
-        formError.textContent = 'La imagen debe ser menor a 5MB.';
-        pfImage.value = '';
-        return;
-    }
-
-    currentImageFile = file;
-    const reader = new FileReader();
-    reader.onload = ev => {
-        previewImg.src = ev.target.result;
-        uploadPlaceholder.classList.add('hidden');
-        uploadPreview.classList.remove('hidden');
-        currentImageName.textContent = file.name;
-    };
-    reader.readAsDataURL(file);
 });
 
 removeImageBtn.addEventListener('click', () => {
-    currentImageFile = null;
     currentImageUrl = null;
-    resetImageUpload();
+    resetImagePreview();
 });
 
 // --- Save Product ---
@@ -546,14 +524,6 @@ modalSave.addEventListener('click', async () => {
     modalSave.innerHTML = '<div class="spinner-mini"></div> Guardando...';
 
     try {
-        // Upload image if new
-        let imageUrl = currentImageUrl || '';
-        if (currentImageFile) {
-            const storageRef = storage.ref(`products/${Date.now()}_${currentImageFile.name}`);
-            const snapshot = await storageRef.put(currentImageFile);
-            imageUrl = await snapshot.ref.getDownloadURL();
-        }
-
         const productData = {
             code,
             title,
@@ -564,7 +534,7 @@ modalSave.addEventListener('click', async () => {
             accentColorAlpha10: config?.alpha10 || 'rgba(0, 240, 255, 0.1)',
             use,
             features,
-            image: imageUrl,
+            image: currentImageUrl || '',
             options: options || null,
             defaultPrice: price,
             selectedColor: options?.colors?.[0] || null,
@@ -657,12 +627,11 @@ async function openEditModal(productId) {
         // Image
         currentImageUrl = data.image || '';
         if (currentImageUrl) {
+            pfImageUrl.value = currentImageUrl;
             previewImg.src = currentImageUrl;
-            uploadPlaceholder.classList.add('hidden');
-            uploadPreview.classList.remove('hidden');
-            currentImageName.textContent = 'Imagen actual';
+            imagePreviewUrl.classList.remove('hidden');
         } else {
-            resetImageUpload();
+            resetImagePreview();
         }
 
         openModal('Editar Producto');
