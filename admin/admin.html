@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J2PGamingTech | Panel de Administración</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Admin Styles -->
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- ==================== LOGIN SCREEN ==================== -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <svg class="login-processor" viewBox="0 0 100 100" width="50" height="50">
+                    <rect class="lpf" x="20" y="20" width="60" height="60" rx="10" />
+                    <line class="lpp" x1="35" y1="20" x2="35" y2="10" />
+                    <line class="lpp" x1="50" y1="20" x2="50" y2="10" />
+                    <line class="lpp" x1="65" y1="20" x2="65" y2="10" />
+                    <line class="lpp" x1="35" y1="80" x2="35" y2="90" />
+                    <line class="lpp" x1="50" y1="80" x2="50" y2="90" />
+                    <line class="lpp" x1="65" y1="80" x2="65" y2="90" />
+                    <line class="lpp" x1="20" y1="35" x2="10" y2="35" />
+                    <line class="lpp" x1="20" y1="50" x2="10" y2="50" />
+                    <line class="lpp" x1="20" y1="65" x2="10" y2="65" />
+                    <line class="lpp" x1="80" y1="35" x2="90" y2="35" />
+                    <line class="lpp" x1="80" y1="50" x2="90" y2="50" />
+                    <line class="lpp" x1="80" y1="65" x2="90" y2="65" />
+                    <rect class="lpc" x="35" y="35" width="30" height="30" rx="4" />
+                    <path class="lpb" d="M 45,40 L 55,48 L 47,52 L 53,60" />
+                </svg>
+                <div class="login-brand">
+                    <span class="lg-brand-top">J2P</span>
+                    <span class="lg-brand-bot">ADMIN</span>
+                </div>
+            </div>
+            <h2 class="login-title">Panel de Control</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="login-email" placeholder="Correo electrónico" required autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="login-password" placeholder="Contraseña" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="login-error"></div>
+                <button type="submit" id="login-btn" class="login-submit">
+                    <span>Ingresar</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+            <p class="login-hint">Acceso exclusivo para administradores.</p>
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN APP ==================== -->
+    <div id="admin-app">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span class="sidebar-brand">J2P<span class="sidebar-brand-accent">ADMIN</span></span>
+                </div>
+                <button class="sidebar-close" id="sidebar-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-view="products">
+                    <i class="fa-solid fa-boxes"></i>
+                    <span>Productos</span>
+                </a>
+                <a class="nav-item" data-view="export">
+                    <i class="fa-solid fa-file-export"></i>
+                    <span>Exportar</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="sidebar-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <!-- Main Panel -->
+        <main class="main-panel">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <button class="topbar-menu" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+                <h2 class="topbar-title" id="view-title">Dashboard</h2>
+                <div class="topbar-right">
+                    <span class="topbar-user" id="topbar-user">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <span id="user-email-display"></span>
+                    </span>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+
+                <!-- ===== DASHBOARD VIEW ===== -->
+                <section id="view-dashboard" class="view active">
+                    <div class="stats-grid">
+                        <div class="stat-card stat-cyan">
+                            <div class="stat-icon"><i class="fa-solid fa-box"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-total">0</span>
+                                <span class="stat-label">Productos Totales</span>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-magenta">
+                            <div class="stat-icon"><i class="fa-solid fa-tags"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-categories">0</span>
+                                <span class="stat-label">Categorías</span>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-purple">
+                            <div class="stat-icon"><i class="fa-solid fa-coins"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-inventory-value">S/. 0</span>
+                                <span class="stat-label">Valor Total Inventario</span>
+                            </div>
+                        </div>
+                        <div class="stat-card stat-green">
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-value" id="stat-recent">0</span>
+                                <span class="stat-label">Últimos 30 días</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3><i class="fa-solid fa-chart-simple"></i> Productos por Categoría</h3>
+                            </div>
+                            <div class="dash-card-body" id="category-breakdown">
+                                <div class="loading-spinner-mini"><div class="spinner-mini"></div></div>
+                            </div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="dash-card-header">
+                                <h3><i class="fa-solid fa-clock-rotate-left"></i> Últimos Productos</h3>
+                            </div>
+                            <div class="dash-card-body" id="recent-products">
+                                <div class="loading-spinner-mini"><div class="spinner-mini"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== PRODUCTS VIEW ===== -->
+                <section id="view-products" class="view">
+                    <div class="view-toolbar">
+                        <div class="search-wrapper-admin">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="product-search" placeholder="Buscar productos por nombre, categoría..." aria-label="Buscar productos">
+                        </div>
+                        <button class="btn-primary" id="add-product-btn">
+                            <i class="fa-solid fa-plus"></i> Nuevo Producto
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px">Img</th>
+                                    <th style="width:70px">Código</th>
+                                    <th>Nombre</th>
+                                    <th style="width:130px">Categoría</th>
+                                    <th style="width:100px">Precio</th>
+                                    <th style="width:80px">Opciones</th>
+                                    <th style="width:100px">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-tbody">
+                                <tr><td colspan="7" class="table-empty">Cargando productos...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ===== EXPORT VIEW ===== -->
+                <section id="view-export" class="view">
+                    <div class="export-card">
+                        <div class="export-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+                        <h3>Exportar Catálogo</h3>
+                        <p>Descarga todos los productos en formato JSON para respaldo o migración.</p>
+                        <button class="btn-primary btn-lg" id="export-btn">
+                            <i class="fa-solid fa-download"></i> Descargar JSON
+                        </button>
+                    </div>
+                    <div class="export-preview">
+                        <h4><i class="fa-solid fa-code"></i> Vista Previa</h4>
+                        <pre id="export-preview"><code>// Selecciona "Descargar JSON" para exportar el catálogo</code></pre>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== PRODUCT MODAL ==================== -->
+    <div class="modal-overlay" id="product-modal-overlay"></div>
+    <div class="modal" id="product-modal">
+        <div class="modal-header">
+            <h3 id="modal-title"><i class="fa-solid fa-cube"></i> Nuevo Producto</h3>
+            <button class="modal-close" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <form id="product-form" novalidate>
+                <input type="hidden" id="pf-id">
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-code">Código</label>
+                        <input type="text" id="pf-code" placeholder="Ej: 07">
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-category">Categoría <span class="required">*</span></label>
+                        <select id="pf-category" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="cables">Cables & Accesorios</option>
+                            <option value="audio">Audio & Accesorios</option>
+                            <option value="personal-care">Cuidado Personal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pf-title">Nombre del Producto <span class="required">*</span></label>
+                    <input type="text" id="pf-title" placeholder="Ej: Cable Cargador Tipo C 66W Trenzado" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-category-label">Etiqueta de Categoría</label>
+                        <input type="text" id="pf-category-label" placeholder="Ej: Carga Rápida">
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-price">Precio por Defecto (S/.) <span class="required">*</span></label>
+                        <input type="number" id="pf-price" step="0.01" min="0" placeholder="0.00" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pf-use">Descripción / Uso <span class="required">*</span></label>
+                    <textarea id="pf-use" rows="3" placeholder="Describe el uso recomendado del producto..." required></textarea>
+                </div>
+
+                <!-- Features -->
+                <div class="form-group">
+                    <label>Características</label>
+                    <div id="features-container">
+                        <div class="dynamic-item">
+                            <input type="text" class="feature-input" placeholder="Ej: Carga rápida hasta 66W">
+                            <button type="button" class="btn-remove-feature" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-add-item" id="add-feature-btn">
+                        <i class="fa-solid fa-plus"></i> Agregar característica
+                    </button>
+                </div>
+
+                <!-- Options Toggle -->
+                <div class="form-group">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="pf-has-options">
+                        <span class="toggle-switch"></span>
+                        ¿Este producto tiene opciones (colores, largos)?
+                    </label>
+                </div>
+
+                <div id="options-section" class="hidden">
+                    <!-- Colors -->
+                    <div class="form-group">
+                        <label>Colores disponibles</label>
+                        <div id="colors-container">
+                            <div class="dynamic-item">
+                                <input type="text" class="color-input" placeholder="Ej: Negro">
+                                <button type="button" class="btn-remove-color" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-item" id="add-color-btn">
+                            <i class="fa-solid fa-plus"></i> Agregar color
+                        </button>
+                    </div>
+
+                    <!-- Lengths / Sizes -->
+                    <div class="form-group">
+                        <label>Largos / Tamaños con precio</label>
+                        <div id="lengths-container">
+                            <div class="dynamic-item-row">
+                                <input type="text" class="length-name" placeholder="Ej: 1m">
+                                <input type="number" class="length-price" step="0.01" min="0" placeholder="S/. 0.00">
+                                <button type="button" class="btn-remove-length" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add-item" id="add-length-btn">
+                            <i class="fa-solid fa-plus"></i> Agregar tamaño
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label for="pf-image">Imagen del Producto</label>
+                    <div class="image-upload-area" id="image-upload-area">
+                        <input type="file" id="pf-image" accept="image/jpeg,image/png,image/webp">
+                        <div class="upload-placeholder" id="upload-placeholder">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <p>Haz clic para subir imagen</p>
+                            <span>JPEG, PNG o WebP</span>
+                        </div>
+                        <div class="upload-preview hidden" id="upload-preview">
+                            <img id="preview-img" alt="Preview">
+                            <button type="button" class="btn-remove-image" id="remove-image-btn">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <span id="current-image-name" class="image-name"></span>
+                </div>
+
+                <div class="modal-error" id="form-error"></div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="modal-cancel">Cancelar</button>
+            <button class="btn-primary" id="modal-save">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Producto
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== SCRIPTS ==================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-storage-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

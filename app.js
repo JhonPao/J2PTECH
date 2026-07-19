@@ -1,145 +1,8 @@
 // J2PGamingTech Catalog Application
 
 // --- Product Database ---
-const products = [
-    {
-        id: "cable-cargador-66w",
-        code: "01",
-        title: "Cable Cargador Tipo C 66W Trenzado",
-        category: "cables",
-        categoryLabel: "Carga Rápida",
-        accentColor: "#00f0ff", // Cyan
-        accentColorAlpha: "rgba(0, 240, 255, 0.2)",
-        accentColorAlpha10: "rgba(0, 240, 255, 0.1)",
-        use: "carga rápida para smartphones Android — compatible con Huawei, Xiaomi, RedMi, Oppo, OnePlus y más equipos con entrada USB-C.",
-        features: [
-            "Carga rápida hasta 66W",
-            "Cable trenzado reforzado, mayor duración",
-            "Conector en ángulo recto, ideal para gaming en el celular"
-        ],
-        image: "assets/products/cable_cargador.jpg",
-        options: {
-            colors: ["Negro", "Azul", "Rojo", "Púrpura", "Rosado", "Plateado"],
-            lengths: [
-                { name: "30cm", price: 12.00 },
-                { name: "1m", price: 15.00 },
-                { name: "2m", price: 18.00 },
-                { name: "3m", price: 22.00 }
-            ]
-        },
-        // Defaults
-        defaultPrice: 15.00,
-        selectedColor: "Negro",
-        selectedLength: "1m"
-    },
-    {
-        id: "kit-limpieza-multifuncional",
-        code: "02",
-        title: "Kit de Limpieza Multifuncional para Dispositivos",
-        category: "cables",
-        categoryLabel: "Limpieza Tech",
-        accentColor: "#00f0ff", // Cyan
-        accentColorAlpha: "rgba(0, 240, 255, 0.2)",
-        accentColorAlpha10: "rgba(0, 240, 255, 0.1)",
-        use: "mantenimiento y limpieza de celulares, laptops, teclados gamer y parlantes.",
-        features: [
-            "Incluye tapones antipolvo para puerto tipo C",
-            "Cepillos de limpieza para teclado",
-            "Cepillo multifuncional para orificios de altavoces",
-            "Cabezal de limpieza anti-obstrucción",
-            "Set compacto, ideal para llevar en la mochila"
-        ],
-        image: "assets/products/kit_limpieza.jpg",
-        options: null,
-        defaultPrice: 19.00
-    },
-    {
-        id: "auriculares-kz-edx-lite",
-        code: "05",
-        title: "Auriculares KZ EDX Lite HIFI In-Ear",
-        category: "audio",
-        categoryLabel: "Audio Gamer",
-        accentColor: "#ff007f", // Magenta
-        accentColorAlpha: "rgba(255, 0, 127, 0.2)",
-        accentColorAlpha10: "rgba(255, 0, 127, 0.1)",
-        use: "música, gaming y monitoreo en vivo — sonido con graves potentes y buena definición.",
-        features: [
-            "Sonido estéreo HIFI con bass reforzado",
-            "Diseño in-ear transparente tipo monitor de estudio",
-            "Incluye micrófono integrado para llamadas/gaming",
-            "Cable desmontable, mayor durabilidad"
-        ],
-        image: "assets/products/auriculares_kz.jpg",
-        options: {
-            colors: ["Gris", "Transparente"]
-        },
-        defaultPrice: 45.00,
-        selectedColor: "Gris"
-    },
-    {
-        id: "set-4-piezas-reloj",
-        code: "04",
-        title: "Set 4 Piezas: Reloj Deportivo + Pulsera + Collar + Anillo",
-        category: "audio", // Representing Moda & Regalo under same grid, we will filter as Audio or special tag
-        categoryLabel: "Moda & Regalo",
-        accentColor: "#ff007f", // Magenta
-        accentColorAlpha: "rgba(255, 0, 127, 0.2)",
-        accentColorAlpha10: "rgba(255, 0, 127, 0.1)",
-        use: "accesorio de uso diario o regalo para cumpleaños, Día del Padre, San Valentín, graduaciones.",
-        features: [
-            "Reloj deportivo digital con pantalla LED",
-            "Pulsera tipo cadena en acabado negro",
-            "Collar con dije de cruz",
-            "Anillo a juego incluido",
-            "Diseño elegante todo en negro"
-        ],
-        image: "assets/products/set_4_piezas.jpg",
-        options: null,
-        defaultPrice: 59.00
-    },
-    {
-        id: "afeitadora-nasal",
-        code: "03",
-        title: "Afeitadora Eléctrica para Vello Nasal y Auditivo",
-        category: "personal-care",
-        categoryLabel: "Cuidado Personal",
-        accentColor: "#bd00ff", // Purple
-        accentColorAlpha: "rgba(189, 0, 255, 0.2)",
-        accentColorAlpha10: "rgba(189, 0, 255, 0.1)",
-        use: "recorte profesional y seguro de vello nasal, auditivo, cejas y zonas faciales. Para hombres y mujeres.",
-        features: [
-            "Diseño inalámbrico y portátil",
-            "Corte sin dolor, cuchillas de precisión",
-            "Incluye protector/tapa para el cabezal",
-            "Fácil de limpiar y mantener",
-            "Ideal para uso diario o de viaje"
-        ],
-        image: "assets/products/afeitadora_vello.jpg",
-        options: null,
-        defaultPrice: 25.00
-    },
-    {
-        id: "set-peluqueria-recargable",
-        code: "06",
-        title: "Set de Peluquería y Afeitado Profesional Recargable",
-        category: "personal-care",
-        categoryLabel: "Cuidado Personal",
-        accentColor: "#bd00ff", // Purple
-        accentColorAlpha: "rgba(189, 0, 255, 0.2)",
-        accentColorAlpha10: "rgba(189, 0, 255, 0.1)",
-        use: "corte de cabello y perfilado de barba a nivel profesional, para uso en casa o barbería.",
-        features: [
-            "2 piezas: cortapelo + recortador de precisión",
-            "Recargable por USB, inalámbrico",
-            "Cuchillas afiladas de alto rendimiento",
-            "Incluye 4 peines guía indicadores + accesorios",
-            "Diseño grabado en dorado y negro"
-        ],
-        image: "assets/products/set_peluqueria.jpg",
-        options: null,
-        defaultPrice: 69.00
-    }
-];
+let products = [];
+let productsLoaded = false;
 
 // --- Application State ---
 let cart = [];
@@ -148,14 +11,15 @@ let searchQuery = "";
 // Track selected options for each product
 const selectedOptionsState = {};
 
-// Initialize state selections
-products.forEach(p => {
-    selectedOptionsState[p.id] = {
-        color: p.selectedColor || null,
-        length: p.selectedLength || null,
-        price: p.defaultPrice
-    };
-});
+function updateSelectedOptionsState() {
+    products.forEach(p => {
+        selectedOptionsState[p.id] = {
+            color: p.selectedColor || null,
+            length: p.selectedLength || null,
+            price: p.defaultPrice
+        };
+    });
+}
 
 // --- DOM Elements ---
 const productsGrid = document.getElementById("products-grid");
@@ -173,12 +37,48 @@ const cartBadgeCount = document.getElementById("cart-badge-count");
 const floatCartCount = document.getElementById("float-cart-count");
 const sendOrderBtn = document.getElementById("send-order-btn");
 
+// --- Load Products from Firestore ---
+async function loadProductsFromFirestore() {
+    productsGrid.innerHTML = `
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando catálogo tecnológico...</p>
+        </div>
+    `;
+
+    try {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) {
+            productsGrid.innerHTML = `
+                <div class="loading-spinner">
+                    <i class="fa-solid fa-database" style="font-size:2.5rem;color:#4a5568"></i>
+                    <p>Catálogo vacío — agrega productos desde el panel de administración.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const snapshot = await db.collection('products').orderBy('createdAt', 'desc').get();
+        products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        productsLoaded = true;
+        updateSelectedOptionsState();
+        renderProducts();
+    } catch (error) {
+        console.error("Error loading products:", error);
+        productsGrid.innerHTML = `
+            <div class="loading-spinner">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size:2.5rem;color:#ff007f"></i>
+                <p>Error al cargar el catálogo. Verifica la conexión con Firebase.</p>
+            </div>
+        `;
+    }
+}
+
 // --- Initialization ---
 document.addEventListener("DOMContentLoaded", () => {
     loadCartFromLocalStorage();
-    renderProducts();
     setupEventListeners();
     updateCartUI();
+    loadProductsFromFirestore();
 });
 
 // --- Event Listeners Setup ---
