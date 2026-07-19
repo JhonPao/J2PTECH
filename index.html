@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo J2PGamingTech - Cables, Accesorios, Audio y Cuidado Personal. Tecnología importada en Cajamarca al mejor precio. ¡Pide fácil por WhatsApp!">
+    <meta name="theme-color" content="#07070b">
+    <title>J2PGamingTech | Catálogo de Productos</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Glows -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-container" id="logo">
+                <!-- Processor Logo (SVG with neon glows) -->
+                <svg class="processor-logo" viewBox="0 0 100 100" width="60" height="60">
+                    <!-- Outer frame -->
+                    <rect class="logo-frame" x="20" y="20" width="60" height="60" rx="10" />
+                    <!-- CPU Pins top -->
+                    <line class="logo-pin" x1="35" y1="20" x2="35" y2="10" />
+                    <line class="logo-pin" x1="50" y1="20" x2="50" y2="10" />
+                    <line class="logo-pin" x1="65" y1="20" x2="65" y2="10" />
+                    <!-- CPU Pins bottom -->
+                    <line class="logo-pin" x1="35" y1="80" x2="35" y2="90" />
+                    <line class="logo-pin" x1="50" y1="80" x2="50" y2="90" />
+                    <line class="logo-pin" x1="65" y1="80" x2="65" y2="90" />
+                    <!-- CPU Pins left -->
+                    <line class="logo-pin" x1="20" y1="35" x2="10" y2="35" />
+                    <line class="logo-pin" x1="20" y1="50" x2="10" y2="50" />
+                    <line class="logo-pin" x1="20" y1="65" x2="10" y2="65" />
+                    <!-- CPU Pins right -->
+                    <line class="logo-pin" x1="80" y1="35" x2="90" y2="35" />
+                    <line class="logo-pin" x1="80" y1="50" x2="90" y2="50" />
+                    <line class="logo-pin" x1="80" y1="65" x2="90" y2="65" />
+                    <!-- Inner chip -->
+                    <rect class="logo-core" x="35" y="35" width="30" height="30" rx="4" />
+                    <!-- Lightning Bolt (diagonal accents) -->
+                    <path class="logo-bolt" d="M 45,40 L 55,48 L 47,52 L 53,60" />
+                </svg>
+                <div class="logo-text">
+                    <span class="brand-gaming">J2P</span>
+                    <span class="brand-tech">GAMINGTECH</span>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu Toggle (Cart & Search trigger) -->
+            <div class="header-actions">
+                <button class="action-btn search-toggle" id="search-toggle-btn" aria-label="Buscar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button class="action-btn cart-toggle" id="cart-toggle-btn" aria-label="Ver Carrito">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cart-badge-count">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-glow-title">
+                <span class="subtitle">¡NUEVO STOCK · JULIO 2026!</span>
+                <h1 class="main-title">CATÁLOGO DE PRODUCTOS</h1>
+            </div>
+            <p class="hero-desc">
+                Cables, Accesorios, Audio y Cuidado Personal. Tecnología importada al mejor precio. 
+                <span class="highlight-cyan">Entregas en Cajamarca</span> y envíos rápidos.
+            </p>
+        </section>
+
+        <!-- Filters and Search Bar Container -->
+        <section class="filters-search-section">
+            <div class="search-wrapper" id="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="search-input" placeholder="Buscar cables, auriculares, afeitadoras..." aria-label="Buscar productos">
+                <button class="clear-search-btn" id="clear-search" aria-label="Limpiar búsqueda">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="categories-bar">
+                <button class="category-btn active" data-category="all">Todos</button>
+                <button class="category-btn" data-category="cables">Cables & Accesorios</button>
+                <button class="category-btn" data-category="audio">Audio & Accesorios</button>
+                <button class="category-btn" data-category="personal-care">Cuidado Personal</button>
+            </div>
+        </section>
+
+        <!-- Product Grid -->
+        <section class="products-section">
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be generated dynamically by app.js -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Cargando catálogo tecnológico...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Buttons -->
+    <div class="floating-actions">
+        <button class="btn-float btn-float-cart" id="float-cart-btn" aria-label="Ver Carrito">
+            <i class="fa-solid fa-shopping-bag"></i>
+            <span class="float-badge" id="float-cart-count">0</span>
+        </button>
+        <a href="https://wa.me/51912667200" target="_blank" class="btn-float btn-float-wa" id="float-wa-btn" aria-label="Escríbenos por WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Shopping Cart Drawer (Side panel) -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-drawer-header">
+            <h3><i class="fa-solid fa-shopping-basket"></i> Mi Pedido</h3>
+            <button class="close-cart-btn" id="close-cart" aria-label="Cerrar carrito">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="cart-drawer-content">
+            <div class="cart-items" id="cart-items">
+                <!-- Cart items will be generated dynamically -->
+                <div class="empty-cart-state">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    <p>Tu carrito está vacío</p>
+                    <span>Selecciona productos y personaliza tus opciones para agregarlos.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-summary-line">
+                <span>Subtotal Estimado:</span>
+                <span class="cart-total-price" id="cart-total-price">S/. 0.00</span>
+            </div>
+            <div class="cart-disclaimer">
+                * Precios y disponibilidad sujetos a confirmación final por WhatsApp. Envíos dentro de Cajamarca.
+            </div>
+            <button class="send-order-btn" id="send-order-btn">
+                <i class="fa-brands fa-whatsapp"></i> Enviar Pedido a WhatsApp
+            </button>
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>J2P GAMINGTECH</h3>
+                <p>Tu tienda de tecnología importada en Cajamarca.</p>
+            </div>
+            <div class="footer-info">
+                <div class="info-item">
+                    <i class="fa-solid fa-truck-fast text-cyan"></i>
+                    <span>Envíos dentro de Cajamarca</span>
+                </div>
+                <div class="info-item">
+                    <i class="fa-solid fa-check text-magenta"></i>
+                    <span>Stock limitado disponible</span>
+                </div>
+                <div class="info-item">
+                    <i class="fa-brands fa-whatsapp text-green"></i>
+                    <span>Pedidos: 912 667 200</span>
+                </div>
+            </div>
+            <p class="copyright">© 2026 J2P GamingTech. Todos los derechos reservados. Diseñado con tecnología moderna.</p>
+        </div>
+    </footer>
+
+    <!-- App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
