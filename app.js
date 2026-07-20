@@ -226,13 +226,39 @@ function renderProducts() {
             optionsHTML += `</div>`;
         }
 
+        // Get images array
+        const images = (p.images && p.images.length) ? p.images : (p.image ? [p.image] : []);
+        const multiImage = images.length > 1;
+
+        let imageHTML;
+        if (multiImage) {
+            imageHTML = `
+                <div class="product-carousel" data-id="${p.id}">
+                    <div class="carousel-track">
+                        ${images.map(url => `
+                            <div class="carousel-slide">
+                                <img src="${url}" alt="${p.title}" class="product-image" onerror="this.style.display='none'">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="carousel-btn carousel-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="carousel-btn carousel-next"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div class="carousel-dots">
+                        ${images.map((_, i) => `<span class="carousel-dot${i === 0 ? ' active' : ''}" data-index="${i}"></span>`).join('')}
+                    </div>
+                </div>
+            `;
+        } else {
+            imageHTML = `<img src="${images[0] || 'https://placehold.co/400x400/0f0f1c/ffffff?text=' + encodeURIComponent(p.title)}" alt="${p.title}" class="product-image" onerror="this.src='https://placehold.co/400x400/0f0f1c/ffffff?text=${encodeURIComponent(p.title)}'">`;
+        }
+
         // Feature list items
         const featuresListHTML = p.features.map(f => `<li>${f}</li>`).join("");
 
         card.innerHTML = `
             <div class="product-image-container">
                 <span class="product-badge">${p.categoryLabel}</span>
-                <img src="${p.image}" alt="${p.title}" class="product-image" onerror="this.src='https://placehold.co/400x400/0f0f1c/ffffff?text=${encodeURIComponent(p.title)}'">
+                ${imageHTML}
             </div>
             <div class="product-info">
                 <h3 class="product-title">${p.title}</h3>
@@ -254,6 +280,9 @@ function renderProducts() {
         `;
 
         productsGrid.appendChild(card);
+
+        // Initialize carousel if multi-image
+        if (multiImage) initCarousel(card.querySelector('.product-carousel'));
     });
 
     // Bind dynamic option selection events
@@ -504,4 +533,57 @@ function sendOrderToWhatsApp() {
 
     // Open WhatsApp in new tab
     window.open(whatsappURL, "_blank");
+}
+
+// --- Carousel Controller ---
+function initCarousel(carousel) {
+    if (!carousel) return;
+    const track = carousel.querySelector('.carousel-track');
+    const slides = track.querySelectorAll('.carousel-slide');
+    const prevBtn = carousel.querySelector('.carousel-prev');
+    const nextBtn = carousel.querySelector('.carousel-next');
+    const dots = carousel.querySelectorAll('.carousel-dot');
+    if (slides.length < 2) return;
+
+    let current = 0;
+
+    function goTo(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        current = index;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+    }
+
+    prevBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current - 1); });
+    nextBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current + 1); });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', e => {
+            e.stopPropagation();
+            goTo(parseInt(dot.dataset.index));
+        });
+    });
+
+    // Touch swipe
+    let startX = 0, startY = 0, isDragging = false;
+
+    track.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isDragging = true;
+    }, { passive: true });
+
+    track.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        const dx = startX - e.touches[0].clientX;
+        const dy = Math.abs(startY - e.touches[0].clientY);
+        if (Math.abs(dx) > dy && Math.abs(dx) > 40) {
+            if (dx > 0) goTo(current + 1);
+            else goTo(current - 1);
+            isDragging = false;
+        }
+    }, { passive: true });
+
+    track.addEventListener('touchend', () => { isDragging = false; }, { passive: true });
 }

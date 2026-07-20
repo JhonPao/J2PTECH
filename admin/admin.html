@@ -329,16 +329,22 @@
                     </div>
                 </div>
 
-                <!-- Image URL -->
+                <!-- Images (múltiples URLs) -->
                 <div class="form-group">
-                    <label for="pf-image-url">URL de la Imagen</label>
-                    <input type="url" id="pf-image-url" placeholder="https://ejemplo.com/imagen.jpg (opcional)">
-                    <div class="image-preview-url hidden" id="image-preview-url">
-                        <img id="preview-img" alt="Vista previa" onerror="this.closest('.image-preview-url').classList.add('hidden')">
-                        <button type="button" class="btn-remove-image" id="remove-image-btn">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
+                    <label>Imágenes del Producto</label>
+                    <p class="form-hint">La primera imagen será la principal. Agrega varias para el carrusel.</p>
+                    <div id="images-container">
+                        <div class="dynamic-image-item">
+                            <div class="image-url-row">
+                                <input type="url" class="image-url-input" placeholder="https://ejemplo.com/imagen1.jpg">
+                                <button type="button" class="btn-remove-image-url" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                            <div class="image-thumb-wrap hidden"><img class="image-thumb" alt="Vista previa"></div>
+                        </div>
                     </div>
+                    <button type="button" class="btn-add-item" id="add-image-btn">
+                        <i class="fa-solid fa-plus"></i> Agregar imagen
+                    </button>
                 </div>
 
                 <div class="modal-error" id="form-error"></div>

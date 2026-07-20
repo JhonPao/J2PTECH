@@ -86,10 +86,8 @@ const colorsContainer = document.getElementById('colors-container');
 const addColorBtn = document.getElementById('add-color-btn');
 const lengthsContainer = document.getElementById('lengths-container');
 const addLengthBtn = document.getElementById('add-length-btn');
-const pfImageUrl = document.getElementById('pf-image-url');
-const previewImg = document.getElementById('preview-img');
-const removeImageBtn = document.getElementById('remove-image-btn');
-const imagePreviewUrl = document.getElementById('image-preview-url');
+const imagesContainer = document.getElementById('images-container');
+const addImageBtn = document.getElementById('add-image-btn');
 
 // --- State ---
 let allProducts = [];
@@ -260,9 +258,10 @@ function renderRecentProducts() {
         recent.forEach(p => {
             const created = p.createdAt?.toDate ? p.createdAt.toDate() : null;
             const dateStr = created ? created.toLocaleDateString('es-PE') : '—';
+            const imgUrl = (p.images && p.images[0]) || p.image || 'https://placehold.co/100x100/0f0f1c/ffffff?text=?';
             html += `
                 <div class="recent-item">
-                    <img src="${p.image || 'https://placehold.co/100x100/0f0f1c/ffffff?text=?'}" alt="${p.title}" class="recent-img" onerror="this.src='https://placehold.co/100x100/0f0f1c/ffffff?text=?'">
+                    <img src="${imgUrl}" alt="${p.title}" class="recent-img" onerror="this.src='https://placehold.co/100x100/0f0f1c/ffffff?text=?'">
                     <div class="recent-info">
                         <div class="recent-title">${p.title}</div>
                         <div class="recent-meta">${dateStr} · S/. ${(p.defaultPrice || 0).toFixed(2)}</div>
@@ -302,9 +301,10 @@ function renderProductTable() {
     filtered.forEach(p => {
         const badgeClass = categoryBadgeClass[p.category] || '';
         const hasOptions = p.options && (p.options.colors?.length || p.options.lengths?.length);
+        const firstImg = (p.images && p.images[0]) || p.image || '';
         html += `
             <tr>
-                <td><img src="${p.image || 'https://placehold.co/100x100/0f0f1c/ffffff?text=?'}" alt="" class="table-product-img" onerror="this.src='https://placehold.co/100x100/0f0f1c/ffffff?text=?'"></td>
+                <td><img src="${firstImg}" alt="" class="table-product-img" onerror="this.src='https://placehold.co/100x100/0f0f1c/ffffff?text=?'"></td>
                 <td class="table-product-code">${p.code || '—'}</td>
                 <td class="table-product-name">${p.title}</td>
                 <td><span class="table-category-badge ${badgeClass}">${p.categoryLabel || p.category || '—'}</span></td>
@@ -345,11 +345,10 @@ function closeModal() {
     productForm.reset();
     pfId.value = '';
     editingProductId = null;
-    currentImageUrl = null;
     formError.textContent = '';
     optionsSection.classList.add('hidden');
     pfHasOptions.checked = false;
-    resetImagePreview();
+    resetImagesContainer();
     resetDynamicFields();
 }
 
@@ -375,10 +374,18 @@ function resetDynamicFields() {
     `;
 }
 
-function resetImagePreview() {
-    imagePreviewUrl.classList.add('hidden');
-    previewImg.src = '';
-    pfImageUrl.value = '';
+function resetImagesContainer() {
+    imagesContainer.innerHTML = `
+        <div class="dynamic-image-item">
+            <div class="image-url-row">
+                <input type="url" class="image-url-input" placeholder="https://ejemplo.com/imagen1.jpg">
+                <button type="button" class="btn-remove-image-url" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+            <div class="image-thumb-wrap hidden"><img class="image-thumb" alt="Vista previa"></div>
+        </div>
+    `;
+    bindImageUrlPreviews();
+    bindImageRemoveButtons();
 }
 
 // Close modal events
@@ -451,24 +458,56 @@ bindRemoveButtons(featuresContainer);
 bindRemoveButtons(colorsContainer);
 bindRemoveButtons(lengthsContainer);
 
-// --- Image URL Preview ---
-pfImageUrl.addEventListener('input', () => {
-    const url = pfImageUrl.value.trim();
-    if (url) {
-        previewImg.src = url;
-        imagePreviewUrl.classList.remove('hidden');
-        currentImageUrl = url;
-    } else {
-        imagePreviewUrl.classList.add('hidden');
-        previewImg.src = '';
-        currentImageUrl = null;
-    }
+// --- Image URL List ---
+function bindImageUrlPreviews() {
+    imagesContainer.querySelectorAll('.image-url-input').forEach(input => {
+        input.addEventListener('input', () => {
+            const wrap = input.closest('.dynamic-image-item').querySelector('.image-thumb-wrap');
+            const thumb = wrap.querySelector('.image-thumb');
+            const url = input.value.trim();
+            if (url) {
+                thumb.src = url;
+                wrap.classList.remove('hidden');
+            } else {
+                wrap.classList.add('hidden');
+                thumb.src = '';
+            }
+        });
+        // Trigger preview if value exists
+        if (input.value.trim()) {
+            input.dispatchEvent(new Event('input'));
+        }
+    });
+}
+
+function bindImageRemoveButtons() {
+    imagesContainer.querySelectorAll('.btn-remove-image-url').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const items = imagesContainer.querySelectorAll('.dynamic-image-item');
+            if (items.length > 1) {
+                btn.closest('.dynamic-image-item').remove();
+            }
+        });
+    });
+}
+
+addImageBtn.addEventListener('click', () => {
+    const item = document.createElement('div');
+    item.className = 'dynamic-image-item';
+    item.innerHTML = `
+        <div class="image-url-row">
+            <input type="url" class="image-url-input" placeholder="https://ejemplo.com/imagen${imagesContainer.children.length + 1}.jpg">
+            <button type="button" class="btn-remove-image-url" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+        <div class="image-thumb-wrap hidden"><img class="image-thumb" alt="Vista previa"></div>
+    `;
+    imagesContainer.appendChild(item);
+    bindImageUrlPreviews();
+    bindImageRemoveButtons();
 });
 
-removeImageBtn.addEventListener('click', () => {
-    currentImageUrl = null;
-    resetImagePreview();
-});
+bindImageUrlPreviews();
+bindImageRemoveButtons();
 
 // --- Save Product ---
 modalSave.addEventListener('click', async () => {
@@ -516,6 +555,13 @@ modalSave.addEventListener('click', async () => {
         }
     }
 
+    // Images array
+    const productImages = [];
+    imagesContainer.querySelectorAll('.image-url-input').forEach(input => {
+        const url = input.value.trim();
+        if (url) productImages.push(url);
+    });
+
     // Category config
     const config = categoryConfig[category];
     const categoryLabel = pfCategoryLabel.value.trim() || config?.defaultCategoryLabel || category;
@@ -534,7 +580,8 @@ modalSave.addEventListener('click', async () => {
             accentColorAlpha10: config?.alpha10 || 'rgba(0, 240, 255, 0.1)',
             use,
             features,
-            image: currentImageUrl || '',
+            images: productImages,
+            image: productImages[0] || '',
             options: options || null,
             defaultPrice: price,
             selectedColor: options?.colors?.[0] || null,
@@ -624,15 +671,24 @@ async function openEditModal(productId) {
         });
         bindRemoveButtons(lengthsContainer);
 
-        // Image
-        currentImageUrl = data.image || '';
-        if (currentImageUrl) {
-            pfImageUrl.value = currentImageUrl;
-            previewImg.src = currentImageUrl;
-            imagePreviewUrl.classList.remove('hidden');
-        } else {
-            resetImagePreview();
-        }
+        // Images
+        const images = (data.images && data.images.length) ? data.images : (data.image ? [data.image] : []);
+        if (images.length === 0) images.push('');
+        imagesContainer.innerHTML = '';
+        images.forEach((url, i) => {
+            const item = document.createElement('div');
+            item.className = 'dynamic-image-item';
+            item.innerHTML = `
+                <div class="image-url-row">
+                    <input type="url" class="image-url-input" value="${escapeHtml(url)}" placeholder="https://ejemplo.com/imagen${i + 1}.jpg">
+                    <button type="button" class="btn-remove-image-url" title="Eliminar"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+                <div class="image-thumb-wrap ${url ? '' : 'hidden'}"><img class="image-thumb" src="${escapeHtml(url)}" alt="Vista previa"></div>
+            `;
+            imagesContainer.appendChild(item);
+        });
+        bindImageUrlPreviews();
+        bindImageRemoveButtons();
 
         openModal('Editar Producto');
         modalSave.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Actualizar Producto';
